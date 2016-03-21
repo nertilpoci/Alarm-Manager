@@ -353,7 +353,7 @@ Full-Width Styles
   text-indent: -5000px;
   overflow: hidden;
   background: url(http://icons.iconarchive.com/icons/dtafalonso/modern-xp/512/ModernXP-74-Software-Install-icon.png)   ;
-   background-size:     cover;     
+   background-size:     contain;     
 }
 .zip_download_link:hover {
   background: url(../images/sprite_download.png) no-repeat top left;
