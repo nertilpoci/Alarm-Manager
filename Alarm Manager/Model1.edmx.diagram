@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f6f5630be4f3482ba02dd16f58a0f1ab" Name="Diagram1">
+        <EntityTypeShape EntityType="ASDatabaseModel.Alarm" Width="1.5" PointX="4" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ASDatabaseModel.Exception" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ASDatabaseModel.Schedule" Width="2" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ASDatabaseModel.Sound" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ASDatabaseModel.WeeklySchedule" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <AssociationConnector Association="ASDatabaseModel.FK_Alarm_0_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_Alarm_1_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_Exception_0_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_0_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_1_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_2_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_3_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_4_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_5_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ASDatabaseModel.FK_WeeklySchedule_6_0" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

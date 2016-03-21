@@ -1,0 +1,126 @@
+﻿<UserControl
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:Model="clr-namespace:Alarm_Manager.Model"
+      xmlns:alarmManager="clr-namespace:Alarm_Manager"
+      x:Class="Alarm_Manager.SingleAlarm"
+      mc:Ignorable="d" Width="426.627" Height="270.194" MinWidth="425"
+      DataContext="{Binding Schedules, Source={StaticResource Locator}}"
+     >
+    <UserControl.Resources>
+
+        <Model:SlectedIndexNegativeToFalse x:Key="SlectedIndexNegativeToFalse1"/>
+
+        <Model:DateTimeToShortTime x:Key="DateTimeToShortTime"/>
+
+        <Model:SlectedIndexNegativeToFalse x:Key="SlectedIndexNegativeToFalse"/>
+
+        <Model:EmptyDateToFalse x:Key="EmptyDateToFalse"/>
+
+
+
+
+        <Style TargetType="{x:Type Button}" x:Key="EnableisableStyle" BasedOn="{StaticResource {x:Type Button}}">
+
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Value, Converter={StaticResource EmptyDateToFalse}, ElementName=TimeControl}" Value="True" />
+                        <Condition Binding="{Binding SelectedIndex, Converter={StaticResource SlectedIndexNegativeToFalse}, ElementName=SoundComboBox}" Value="True" />
+                        <Condition Binding="{Binding ElementName=TimeControl,Path=(Validation.HasError)}" Value="False"></Condition>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="True" />
+
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type xctk:TimePicker}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Border BorderBrush="#FFCB2E2E" BorderThickness="1" Background="#11FF0000" IsHitTestVisible="False" x:Name="errorBorder"/>
+                            <AdornedElementPlaceholder x:Name="placeholder" />
+                            <Popup AllowsTransparency="True" HorizontalAlignment="Right" HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade" Placement="Right"
+PlacementTarget="{Binding ElementName=errorBorder}" IsOpen="{Binding ElementName=placeholder, Path=AdornedElement.IsFocused, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Polygon VerticalAlignment="Center" Points="0,4 4,0 4,8" Fill="#FFCB2E2E" Stretch="Fill" Stroke="#FFCB2E2E"
+StrokeThickness="2" />
+                                    <Border Background="#FFCB2E2E" CornerRadius="4" Padding="4">
+                                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="2,0,0,0"
+Text="{Binding ElementName=placeholder, Path=AdornedElement.ToolTip, Mode=OneWay}" />
+                                    </Border>
+                                </StackPanel>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Label Content="Time"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,10,0,0" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Sound" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,70,0,0" FontSize="20" FontWeight="Bold"/>
+        <xctk:TimePicker x:Name="TimeControl" Value="{Binding SingleAlarmTime, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  HorizontalAlignment="Left" Margin="116,18,0,0" VerticalAlignment="Top" Width="202" Height="29" FontSize="16">
+           
+        </xctk:TimePicker>
+        <StackPanel Orientation="Horizontal" Margin="323,63,-3,174">
+            <Button Width="30"
+				Height="30"
+                    Command="{Binding AddNewSoundCommand}"
+				Style="{DynamicResource MetroCircleButtonStyle}" >
+                <Rectangle Width="11"
+					Height="9"
+					Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill"
+							Visual="{DynamicResource appbar_add}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Width="30" Height="30" 
+        	
+			Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding Main.DeleteSoundRelayCommand,Source={StaticResource Locator}}" CommandParameter="{Binding SelectedItem,ElementName=SoundComboBox}" IsEnabled="{Binding SelectedIndex, Converter={StaticResource SlectedIndexNegativeToFalse}, ElementName=SoundComboBox}"  >
+                <Rectangle Width="9"
+				Height="9"
+				Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill"
+						Visual="{DynamicResource appbar_delete}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+        <Button Command="{Binding AddNewAlarmCommand}" IsDefault="True" Content="add" Style="{StaticResource EnableisableStyle}"  HorizontalAlignment="Left" Margin="116,227,0,0" VerticalAlignment="Top" Width="99" FontSize="16" Click="Button_Click_1">
+
+
+
+
+
+
+
+        </Button>
+        <Button Content="CANCEL" HorizontalAlignment="Left" Margin="220,227,0,0" VerticalAlignment="Top" Width="98" FontSize="16" Command="{Binding Main.CloseAlarmCommand,Source={StaticResource Locator}}"/>
+        <ComboBox  ItemsSource="{Binding Sounds}" SelectedItem="{Binding Path=SelectedSound,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  x:Name="SoundComboBox" DisplayMemberPath="Name" HorizontalAlignment="Left" Margin="116,70,0,0" VerticalAlignment="Top" Width="202" Height="34" />
+        <Label Content="Description" HorizontalAlignment="Left" Margin="3,121,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <TextBox Text="{Binding SingleAlarmDescription,Mode=TwoWay}" HorizontalAlignment="Left" Height="47" Margin="116,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" MaxLength="50"/>
+
+
+
+    </Grid>
+
+
+
+
+
+</UserControl>

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Alarm_Manager.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" d:DesignWidth="300"
+             DataContext="{Binding Main,Source={StaticResource Locator}}" Height="457">
+    <Grid>
+        <ComboBox ItemsSource="{Binding Main.DeviceCollection,Source={StaticResource Locator}}" SelectedIndex="{Binding Main.SelectedDevice,Source={StaticResource Locator}}" HorizontalAlignment="Left" Margin="99,162,0,0" VerticalAlignment="Top" Width="131"/>
+        <Label Content="Sound Card" HorizontalAlignment="Left" Margin="-1,157,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.053,-0.308" FontSize="16"/>
+        <Label Content="Theme" HorizontalAlignment="Left" Margin="34,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.541,-1.898" FontSize="16"/>
+        <Label Content="Accent" HorizontalAlignment="Left" Margin="34,102,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding Themes}" SelectedItem="{Binding CurrentTheme}"  HorizontalAlignment="Left" Margin="99,62,0,0" VerticalAlignment="Top" Width="131"/>
+        <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding Accents}" SelectedItem="{Binding CurrentAccent}" HorizontalAlignment="Left" Margin="99,107,0,0" VerticalAlignment="Top" Width="131"/>
+        <controls:ToggleSwitch Header="Run when windows starts" IsChecked="{Binding StartOnStartup}" Margin="34,356,65,43" />
+        <DockPanel   HorizontalAlignment="Left" Margin="29,217,0,0" VerticalAlignment="Top" Width="201">
+            <Label DockPanel.Dock="Left" FontSize="20">Backup</Label>
+            <Button Padding="0" HorizontalAlignment="Right" Command="{Binding BackupCommand}" >
+                <Image Stretch="Fill"  Width="40" Height="40" Source="../Resources\Backup.jpg"></Image>
+
+            </Button>
+        </DockPanel>
+        <DockPanel   HorizontalAlignment="Left" Margin="29,281,0,0" VerticalAlignment="Top" Width="201">
+            <Label DockPanel.Dock="Left" Content="Restore" FontSize="20"/>
+            <Button Padding="0" HorizontalAlignment="Right" Command="{Binding RestoreCommand}" >
+                <Image Stretch="Fill" Width="40" Height="40" Source="../Resources/Restore.jpg" />
+
+            </Button>
+        </DockPanel>
+
+    </Grid>
+</UserControl>

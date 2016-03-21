@@ -1,0 +1,568 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ASDatabaseModel.Store" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Alarm">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sound" Type="integer" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="Schedule" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Schedule" Type="integer" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2147483647" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sound">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Data" Type="blob" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WeeklySchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Monday" Type="integer" />
+          <Property Name="Tuesday" Type="integer" />
+          <Property Name="Wednesday" Type="integer" />
+          <Property Name="Thursday" Type="integer" />
+          <Property Name="Friday" Type="integer" />
+          <Property Name="Saturday" Type="integer" />
+          <Property Name="Sunday" Type="integer" />
+        </EntityType>
+        <Association Name="FK_Alarm_0_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="Alarm" Type="Self.Alarm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Alarm">
+              <PropertyRef Name="Schedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Alarm_1_0">
+          <End Role="Sound" Type="Self.Sound" Multiplicity="1" />
+          <End Role="Alarm" Type="Self.Alarm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sound">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Alarm">
+              <PropertyRef Name="Sound" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exception_0_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="Exception" Type="Self.Exception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Exception">
+              <PropertyRef Name="Schedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_0_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Sunday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_1_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Saturday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_2_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Friday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_3_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Thursday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_4_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Wednesday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_5_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Tuesday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_6_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Monday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ASDatabaseModelStoreContainer">
+          <EntitySet Name="Alarm" EntityType="Self.Alarm" store:Type="Tables" />
+          <EntitySet Name="Exception" EntityType="Self.Exception" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" store:Type="Tables" />
+          <EntitySet Name="Sound" EntityType="Self.Sound" store:Type="Tables" />
+          <EntitySet Name="WeeklySchedule" EntityType="Self.WeeklySchedule" store:Type="Tables" />
+          <AssociationSet Name="FK_Alarm_0_0" Association="Self.FK_Alarm_0_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Alarm" EntitySet="Alarm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Alarm_1_0" Association="Self.FK_Alarm_1_0">
+            <End Role="Sound" EntitySet="Sound" />
+            <End Role="Alarm" EntitySet="Alarm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exception_0_0" Association="Self.FK_Exception_0_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Exception" EntitySet="Exception" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_0_0" Association="Self.FK_WeeklySchedule_0_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_1_0" Association="Self.FK_WeeklySchedule_1_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_2_0" Association="Self.FK_WeeklySchedule_2_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_3_0" Association="Self.FK_WeeklySchedule_3_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_4_0" Association="Self.FK_WeeklySchedule_4_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_5_0" Association="Self.FK_WeeklySchedule_5_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_6_0" Association="Self.FK_WeeklySchedule_6_0">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ASDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Alarm">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sound" Type="Int64" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="Schedule" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Sound1" Relationship="Self.FK_Alarm_0_0" FromRole="Alarm" ToRole="Sound" />
+          <NavigationProperty Name="Schedule1" Relationship="Self.FK_Alarm_1_0" FromRole="Alarm" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Exception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Schedule" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Schedule1" Relationship="Self.FK_Exception_0_0" FromRole="Exception" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Alarms" Relationship="Self.FK_Alarm_1_0" FromRole="Schedule" ToRole="Alarm" />
+          <NavigationProperty Name="Exceptions" Relationship="Self.FK_Exception_0_0" FromRole="Schedule" ToRole="Exception" />
+          <NavigationProperty Name="WeeklySchedules" Relationship="Self.FK_WeeklySchedule_0_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+          <NavigationProperty Name="WeeklySchedules1" Relationship="Self.FK_WeeklySchedule_1_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+          <NavigationProperty Name="WeeklySchedules2" Relationship="Self.FK_WeeklySchedule_2_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+          <NavigationProperty Name="WeeklySchedules3" Relationship="Self.FK_WeeklySchedule_3_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+          <NavigationProperty Name="WeeklySchedules4" Relationship="Self.FK_WeeklySchedule_4_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+          <NavigationProperty Name="WeeklySchedules5" Relationship="Self.FK_WeeklySchedule_5_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+          <NavigationProperty Name="WeeklySchedules6" Relationship="Self.FK_WeeklySchedule_6_0" FromRole="Schedule" ToRole="WeeklySchedule" />
+        </EntityType>
+        <EntityType Name="Sound">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="2147483647" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Alarms" Relationship="Self.FK_Alarm_0_0" FromRole="Sound" ToRole="Alarm" />
+        </EntityType>
+        <EntityType Name="WeeklySchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Monday" Type="Int64" />
+          <Property Name="Tuesday" Type="Int64" />
+          <Property Name="Wednesday" Type="Int64" />
+          <Property Name="Thursday" Type="Int64" />
+          <Property Name="Friday" Type="Int64" />
+          <Property Name="Saturday" Type="Int64" />
+          <Property Name="Sunday" Type="Int64" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_WeeklySchedule_0_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule1" Relationship="Self.FK_WeeklySchedule_1_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule2" Relationship="Self.FK_WeeklySchedule_2_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule3" Relationship="Self.FK_WeeklySchedule_3_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule4" Relationship="Self.FK_WeeklySchedule_4_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule5" Relationship="Self.FK_WeeklySchedule_5_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule6" Relationship="Self.FK_WeeklySchedule_6_0" FromRole="WeeklySchedule" ToRole="Schedule" />
+        </EntityType>
+        <Association Name="FK_Alarm_0_0">
+          <End Role="Sound" Type="Self.Sound" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Alarm" Type="Self.Alarm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sound">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Alarm">
+              <PropertyRef Name="Sound" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Alarm_1_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Alarm" Type="Self.Alarm" Multiplicity="*" >
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Alarm">
+              <PropertyRef Name="Schedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exception_0_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Exception" Type="Self.Exception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Exception">
+              <PropertyRef Name="Schedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_0_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Sunday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_1_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Saturday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_2_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Friday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_3_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Thursday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_4_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Wednesday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_5_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Tuesday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklySchedule_6_0">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WeeklySchedule" Type="Self.WeeklySchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklySchedule">
+              <PropertyRef Name="Monday" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ASDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Alarms" EntityType="Self.Alarm" />
+          <EntitySet Name="Exceptions" EntityType="Self.Exception" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+          <EntitySet Name="Sounds" EntityType="Self.Sound" />
+          <EntitySet Name="WeeklySchedules" EntityType="Self.WeeklySchedule" />
+          <AssociationSet Name="FK_Alarm_0_0" Association="Self.FK_Alarm_0_0">
+            <End Role="Sound" EntitySet="Sounds" />
+            <End Role="Alarm" EntitySet="Alarms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Alarm_1_0" Association="Self.FK_Alarm_1_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Alarm" EntitySet="Alarms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exception_0_0" Association="Self.FK_Exception_0_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Exception" EntitySet="Exceptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_0_0" Association="Self.FK_WeeklySchedule_0_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_1_0" Association="Self.FK_WeeklySchedule_1_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_2_0" Association="Self.FK_WeeklySchedule_2_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_3_0" Association="Self.FK_WeeklySchedule_3_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_4_0" Association="Self.FK_WeeklySchedule_4_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_5_0" Association="Self.FK_WeeklySchedule_5_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklySchedule_6_0" Association="Self.FK_WeeklySchedule_6_0">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="WeeklySchedule" EntitySet="WeeklySchedules" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ASDatabaseModelStoreContainer" CdmEntityContainer="ASDatabaseEntities">
+          <EntitySetMapping Name="Alarms">
+            <EntityTypeMapping TypeName="ASDatabaseModel.Alarm">
+              <MappingFragment StoreEntitySet="Alarm">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Sound" ColumnName="Sound" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exceptions">
+            <EntityTypeMapping TypeName="ASDatabaseModel.Exception">
+              <MappingFragment StoreEntitySet="Exception">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="ASDatabaseModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sounds">
+            <EntityTypeMapping TypeName="ASDatabaseModel.Sound">
+              <MappingFragment StoreEntitySet="Sound">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeeklySchedules">
+            <EntityTypeMapping TypeName="ASDatabaseModel.WeeklySchedule">
+              <MappingFragment StoreEntitySet="WeeklySchedule">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Monday" ColumnName="Monday" />
+                <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
+                <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
+                <ScalarProperty Name="Thursday" ColumnName="Thursday" />
+                <ScalarProperty Name="Friday" ColumnName="Friday" />
+                <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+                <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

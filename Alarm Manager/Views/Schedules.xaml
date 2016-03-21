@@ -1,0 +1,275 @@
+﻿<UserControl
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:alarmManager="clr-namespace:Alarm_Manager"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:command="http://www.galasoft.ch/mvvmlight"
+      xmlns:Model="clr-namespace:Alarm_Manager.Model"
+    x:Class="Alarm_Manager.Schedules"
+      mc:Ignorable="d" 
+     Name="SchedulesControl"
+      d:DesignHeight="300"
+       Width="610" DataContext="{Binding Schedules ,Source={StaticResource Locator}}"
+	>
+
+    <UserControl.Resources>
+        <Model:SelectedIndexToVisibility x:Key="SelectedIndexToVisibility"/>
+        <Model:ZeroToHidden x:Key="ZeroToHidden"/>
+        <Model:ZeroToVisible x:Key="ZeroToVisible"/>
+        <Model:DateTimeToShortTime x:Key="DateTimeToShortTime"/>
+        <Model:TimeTo12HourFormat x:Key="TimeTo12HourFormat"></Model:TimeTo12HourFormat>
+        <Model:OrderAlarms x:Key="OrderAlarms"></Model:OrderAlarms>
+        <Model:IsCurrentAlarm x:Key="IsCurrentAlarm"></Model:IsCurrentAlarm>
+        <Style  TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type xctk:TimePicker}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Border BorderBrush="#FFCB2E2E" BorderThickness="1" Background="#11FF0000" IsHitTestVisible="False" x:Name="errorBorder"/>
+                            <AdornedElementPlaceholder x:Name="placeholder" />
+                            <Popup AllowsTransparency="True" HorizontalAlignment="Right" HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade" Placement="Right"
+PlacementTarget="{Binding ElementName=errorBorder}" IsOpen="{Binding ElementName=placeholder, Path=AdornedElement.IsFocused, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Polygon VerticalAlignment="Center" Points="0,4 4,0 4,8" Fill="#FFCB2E2E" Stretch="Fill" Stroke="#FFCB2E2E"
+StrokeThickness="2" />
+                                    <Border Background="#FFCB2E2E" CornerRadius="4" Padding="4">
+                                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="2,0,0,0"
+Text="{Binding ElementName=placeholder, Path=AdornedElement.ToolTip, Mode=OneWay}" />
+                                    </Border>
+                                </StackPanel>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+       
+    </UserControl.Resources>
+
+
+    <Grid HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"  HorizontalAlignment="Center" >
+            <StackPanel Margin="0,0,10,0"  >
+                <Label Content="Schedule List"
+					Style="{DynamicResource DescriptionHeaderStyle}" />
+                <DataGrid x:Name="ScheduleList" Visibility="{Binding Items.Count, Converter={StaticResource ZeroToHidden}, ElementName=ScheduleList, Mode=OneWay}"
+					Margin="10,10,10,0"
+					BorderThickness="0" AutoGenerateColumns="False"
+					ItemsSource="{Binding Schedules, Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" CanUserDeleteRows="True" CanUserAddRows="False"
+					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" MaxHeight="385" HorizontalAlignment="Center" Width="170"    >
+                    <DataGrid.Columns>
+
+
+
+                        <DataGridTemplateColumn MaxWidth="125" CanUserSort="True" Header="Schedule">
+
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <TextBox  >
+                                        <TextBox.Text>
+                                            <Binding Path="Name"  >
+                                                <Binding.ValidationRules>
+                                                    <alarmManager:DuplicateScheduleValidation></alarmManager:DuplicateScheduleValidation>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn  Width="*" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <!--Click="ButtonBase_OnClick"-->
+                                <DataTemplate>
+                                    <Button Width="20" Height="20" Command="{Binding DataContext.DeleteScheduleCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" >
+
+                                        <Rectangle Width="10"
+											Height="10"
+											Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Stretch="Fill"
+													Visual="{DynamicResource appbar_delete}" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="CellEditEnding">
+                            <command:EventToCommand 
+								Command="{Binding Main.RowEditEndingRelayCommand, Mode=OneWay, Source={StaticResource Locator}}"
+								CommandParameter="{Binding Mode=OneWay}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DataGrid>
+                <TextBlock HorizontalAlignment="Center" Visibility="{Binding Items.Count, Converter={StaticResource ZeroToVisible}, ElementName=ScheduleList, Mode=OneWay}" Height="80" Width="149" TextWrapping="Wrap" FontSize="14"  Text="You haven't set up any schedules click the add button below to get started"/>
+
+                <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
+                    <Button Width="30" x:Name="AddButton"
+						Height="30"
+						Margin="0, 10, 0, 0" Command="{Binding Main.ShowNewScheduleRelayCommand, Source={StaticResource Locator}}"
+						Style="{DynamicResource MetroCircleButtonStyle}"  >
+                        <Rectangle Width="10"
+							Height="10"
+							Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill"
+									Visual="{DynamicResource appbar_add}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+        <GridSplitter Margin="10,10,10,10"   Visibility="{Binding SelectedIndex, Converter={StaticResource SelectedIndexToVisibility}, ElementName=ScheduleList}" Grid.Column="1" HorizontalAlignment="Center"  Width="10" Height="auto" ShowsPreview="True"  />
+        <StackPanel Width="420" Margin="0,30,0,0" HorizontalAlignment="Center" Grid.Column="2" Visibility="{Binding SelectedIndex, Converter={StaticResource SelectedIndexToVisibility}, ElementName=ScheduleList}">
+
+            <DataGrid  x:Name="AlarmsDataGrid" Width="410" CanUserAddRows="False" SelectedItem="{Binding SelectedAlarm,Mode=TwoWay}" HorizontalScrollBarVisibility="Hidden"
+				AutoGenerateColumns="False" MaxHeight="400" ItemsSource="{Binding SelectedItem.Alarms }" Visibility="{Binding Items.Count, Converter={StaticResource ZeroToHidden}, ElementName=AlarmsDataGrid, Mode=OneWay}" >
+               
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Time, Converter={StaticResource IsCurrentAlarm}}" Value="True">
+                                    <Setter Property="Background" Value="#1D621D"></Setter>
+                                </DataTrigger>
+                              
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+               
+                <DataGrid.Columns>
+                    <!--<DataGridCheckBoxColumn ElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        Header="IsSelected"
+                                        Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}" />-->
+
+                    <DataGridTemplateColumn  CanUserSort="True" Header="Time">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Time,Converter={StaticResource TimeTo12HourFormat}}"  >
+                                  
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <xctk:TimePicker >
+                                    <xctk:TimePicker.Value>
+
+                                        <Binding Path="Time" >
+
+                                            <Binding.ValidationRules>
+
+                                                <alarmManager:AlarmValidation />
+
+                                            </Binding.ValidationRules>
+                                        </Binding>
+
+
+                                    </xctk:TimePicker.Value>
+                                </xctk:TimePicker>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <alarmManager:DataGridComboBoxColumnWithBindingHack
+                Header="Sound" MaxWidth="100"
+                SelectedValueBinding="{Binding Path= Sound1}"
+               DisplayMemberPath="Name"
+                ItemsSource="{Binding RelativeSource={RelativeSource Findancestor, AncestorType={x:Type UserControl}}, Path=DataContext.Sounds}" />
+
+
+                    <!--<DataGridTemplateColumn CanUserSort="True"  Header="Sound">
+
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sound}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox Name="ComboBoxColumn"  DisplayMemberPath="Name" ></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>-->
+
+                    <DataGridTextColumn MaxWidth="200" Header="Description"
+						Binding="{Binding Description}" />
+                    <DataGridTemplateColumn Width="*"  >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="20" Height="20" Command="{Binding DataContext.DeleteAlarmCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" >
+
+                                    <Rectangle Width="10"
+										Height="10"
+										Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
+												Visual="{DynamicResource appbar_delete}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="CellEditEnding">
+                        <command:EventToCommand
+								Command="{Binding Main.RowEditEndingRelayCommand, Mode=OneWay, Source={StaticResource Locator}}"
+								CommandParameter="{Binding Mode=OneWay}" />
+                    </i:EventTrigger>
+                  
+               
+                </i:Interaction.Triggers>
+            </DataGrid>
+            <TextBlock HorizontalAlignment="Center" Visibility="{Binding Items.Count, Converter={StaticResource ZeroToVisible}, ElementName=AlarmsDataGrid, Mode=OneWay}" Height="39" Width="214" TextWrapping="Wrap" FontSize="14" >You haven't set up any alarms click the add button below to get started</TextBlock>
+            <Button Margin="0,10,0,0" HorizontalAlignment="Center" Command="{Binding ShowNewAlarmCommand}"
+				Height="35"
+				Width="35"
+				Style="{DynamicResource MetroCircleButtonStyle}"   >
+                <Rectangle Width="12"
+					Height="12"
+					Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill"
+							Visual="{DynamicResource appbar_add}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

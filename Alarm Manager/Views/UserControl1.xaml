@@ -1,0 +1,24 @@
+﻿<UserControl
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:Model="clr-namespace:Alarm_Manager.Model" x:Class="Alarm_Manager.UserControl1"
+      mc:Ignorable="d" Height="108"
+	 Width="482" MaxWidth="500" >
+
+    <UserControl.Resources>
+        <Model:InverseBooleanValue x:Key="InverseBooleanValue"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Path="Main" Source="{StaticResource ResourceKey=Locator}"/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <TextBox Style="{StaticResource OpenFileMetroTextBox}"
+			controls:TextboxHelper.Watermark="Enter access file path"
+			controls:TextboxHelper.ButtonCommand="{Binding BrowseFileCommand}" Width="Auto" Height="Auto" x:Name="SelectedfileTextBox"
+			Text="{Binding SelectedPath, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"   Margin="111,38,68,44"/>
+    </Grid>
+</UserControl>
