@@ -9,7 +9,7 @@ Just connect your pc to an audio system and let it run in the backgorund.
 2. Exceptions to put different alarms for specific days(ex vacation days).
 3. Choose specific soundcard.
 
- ![](https://s24.postimg.org/tvm3k03ph/image.png)  |  ![](https://s24.postimg.org/b4k69u951/image.png)
+ ![](https://s24.postimg.cc/tvm3k03ph/image.png)  |  ![](https://s24.postimg.cc/b4k69u951/image.png)
 :-------------------------:|:-------------------------:
-![](https://s24.postimg.org/r42tte56t/image.png)  |  ![](https://s24.postimg.org/jpdi10jb9/image.png)
-![](https://s24.postimg.org/e2h53jgsl/image.png)  |  
+![](https://s24.postimg.cc/r42tte56t/image.png)  |  ![](https://s24.postimg.cc/jpdi10jb9/image.png)
+![](https://s24.postimg.cc/e2h53jgsl/image.png)  |  
